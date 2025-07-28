@@ -26,7 +26,7 @@ const authFormSchema = (type: FormType) => {
 };
 
 const Authform = ({ type }: { type: FormType }) => {
- const router = useRouter();
+  const router = useRouter();
   const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,7 +54,7 @@ const Authform = ({ type }: { type: FormType }) => {
               return;
             }
               toast.success("Account created successfully");
-              router.push('/signIn')
+              router.push('/SignIn')
             }
             else{
                 const {email, password} = values;
@@ -69,7 +69,7 @@ const Authform = ({ type }: { type: FormType }) => {
                   email, idToken
                 })
             toast.success("SignIn successfully");
-              router.push('/')
+            router.push('/')
             }
        }
        catch (error) {
