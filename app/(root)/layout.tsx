@@ -7,7 +7,7 @@ import { isAuthenticated } from "@/lib/auction/auth.action";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const isUserAuthenticated = await isAuthenticated();
-  if (!isUserAuthenticated) redirect("/sign-in");
+  if (!isUserAuthenticated) redirect("/SignIn");
 
   return (
     <div className="root-layout">
