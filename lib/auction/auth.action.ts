@@ -4,7 +4,7 @@ import { auth, db } from "@/Firebase/admin";
 import { cookies } from "next/headers";
 
 // Session duration (1 week)
-const SESSION_DURATION = 60 * 60 * 24 * 7 * 1000;
+const SESSION_DURATION = 60 * 60 * 24 * 7;
 
 // Set session cookie
 export async function setSessionCookie(idToken: string) {
@@ -12,7 +12,7 @@ export async function setSessionCookie(idToken: string) {
 
   // Create session cookie
   const sessionCookie = await auth.createSessionCookie(idToken, {
-    expiresIn: 60 * 60 * 24 * 7 * 1000, // milliseconds
+    expiresIn: SESSION_DURATION * 1000, // milliseconds
   });
 
   // Set cookie in the browser
@@ -100,7 +100,7 @@ export async function signOut() {
 export async function getCurrentUser(): Promise<User | null> {
   const cookieStore = await cookies();
 
-  const sessionCookie = cookieStore.get('session')?.value;
+  const sessionCookie = cookieStore.get("session")?.value;
   if (!sessionCookie) return null;
 
   try {

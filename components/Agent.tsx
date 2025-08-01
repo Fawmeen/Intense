@@ -66,4 +66,4 @@ const Agent = ({userName}: AgentProps) => {
   )
 }
 
-export default Agent
+export default Agent;
