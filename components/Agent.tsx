@@ -42,6 +42,7 @@ const Agent = ({userName, userId, type}: AgentProps) => {
     vapi.on('call-start', onCallStart);
     vapi.on('call-end', onCallEnd);
     vapi.on('message', onMessage);
+    vapi.on("speech-start", onSpeechStart); 
     vapi.on('speech-end', onSpeechEnd);
     vapi.on('error', onError);
 
@@ -49,10 +50,33 @@ const Agent = ({userName, userId, type}: AgentProps) => {
       vapi.off('call-start', onCallStart);
       vapi.off('call-end', onCallEnd);
       vapi.off('message', onMessage);
+      vapi.off("speech-start", onSpeechStart);
       vapi.off('speech-end', onSpeechEnd);
       vapi.off('error', onError);
       }
   })
+  useEffect(() => {
+    // when call finishes, save messages then navigate
+    const saveAndRedirect = async () => {
+      if (callStatus !== CallStatus.FINISHED) return;
+
+      try {
+        const res = await fetch("/api/vapi/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, userName, messages }),
+        });
+        const data = await res.json();
+        console.log("save response:", data);
+      } catch (err) {
+        console.error("Failed to save conversation:", err);
+      } finally {
+        router.push("/");
+      }
+    };
+    saveAndRedirect();
+  }, [callStatus]);
+
 
   useEffect(() => {
                   if(callStatus === CallStatus.FINISHED) router.push('/');

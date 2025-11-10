@@ -5,8 +5,13 @@ import { db } from "@/Firebase/admin";
 import { getRandomInterviewCover } from "@/lib/utils";
 
 export async function POST(request: Request) {
-  const { type, role, level, techstack, amount, userid } = await request.json();
-
+  const { type, amount, role, techstack, level, userid } = await request.json();
+  if (!role || !techstack || !level || !type || !amount || !userid) {
+    return Response.json(
+      { success: false, error: "Missing required fields" },
+      { status: 400 }
+    );
+  }
   try {
     const { text: questions } = await generateText({
       model: google("gemini-2.0-flash-001"),
